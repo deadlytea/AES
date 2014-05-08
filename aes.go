@@ -12,49 +12,78 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 package aes
 
 import (
-  "math"
-  "fmt"
-  "io"
-  "strings"
-  "strconv"
+	"fmt"
+	"io"
+	"math"
+	"strconv"
+	"strings"
 )
 
 type AES struct {
-  const BLOCK_LENGTH = 128 
+  // Nb should be const 4
+	Nb     int
+	Nk     int
+	Nr     int
+	cipher int
+	state  []byte
+	// Need a word type here
+	w []byte
 }
 
-func SubBytes() {
+func (a *AES) EncryptBlock(in []byte) (out []byte) {
+
+	// TODO: Change this to copy slice
+	state := in
+
+	a.AddRoundKey(0)
+
+	for round := 1; round < a.Nr; round++ {
+		a.SubBytes()
+		a.ShiftRows()
+		a.MixColumns()
+		a.AddRoundKey(round)
+	}
+
+	a.SubBytes()
+	a.ShiftRows()
+	a.AddRoundKey(a.Nr)
+
+	// Need to initialize?
+	out = state
+	return
+}
+
+func (a *AES) SubBytes() {
 
 }
 
-func MixColumns() {
+func (a *AES) MixColumns() {
 
 }
 
-func RotWord() {
+func (a *AES) RotWord() {
 
 }
 
-func SubWord() {
+func (a *AES) SubWord() {
 
 }
 
-func AddRoundKey() {
+func (a *AES) AddRoundKey(r int) {
 
 }
 
-func InvSubBytes() {
+func (a *AES) InvSubBytes() {
 
 }
 
-func InvShiftRows() {
+func (a *AES) InvShiftRows() {
 
 }
 
-func InvMixColumns() {
+func (a *AES) InvMixColumns() {
 
 }
